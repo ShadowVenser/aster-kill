@@ -11,6 +11,7 @@ class EntityId {
 public:
     const int Id;
 
+    // ToDo:
     EntityId(const int id, const int gen);
 
     void AddComponent(int component);

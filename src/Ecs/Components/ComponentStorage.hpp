@@ -18,19 +18,47 @@ class ComponentStorage final : public BaseComponentStorage {
 
     int _id;
 
-    void Resize(const int sparseSize, const int dataSize);
+    void Resize(const int sparseSize, const int dataSize)
+    {
+        // ToDo: перевыделение памяти под вектора
+    }
 
 public:
+    // ToDo:
     ComponentStorage(internal::IWorldInternal& w, const int id);
 
-    bool Has(const int e) const override;
-    T& Get(const int e);
-    T& Add(const int e, const T& value);
-    void Remove(const int e) override;
+    bool Has(const int e) const override
+    {
+        // ToDo: Проверка наличия компонента на сущности
+    }
 
+    T& Get(const int e)
+    {
+        // ToDo: Получение компонента с сущности
+    }
+
+    T& Add(const int e, const T& value)
+    {
+        // ToDo: Проверка необходимости ресайза
+
+        // ToDo: Добавление компонента на сущность
+
+        // ToDo: Уведомление мира об изменении набора компонентов на сущности
+    }
+
+    void Remove(const int e) override
+    {
+        // ToDo: FastRemove компонента с сущности
+
+        // ToDo: Уведомление мира об изменении набора компонентов на сущности
+    }
+
+    // ToDo: возврат всех компонентов данного типа
     std::span<const T> All() const;
+    // ToDo: возврат всех сущностей с компонентом данного типа
     std::span<const int> Entities() const override;
 
+    // ToDo:
     int Count() const override;
     int Id() const override;
 };

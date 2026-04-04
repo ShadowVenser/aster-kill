@@ -33,10 +33,18 @@ public:
     void EntityComponentsChanged(int e, int storageId, bool added) override;
 
     template <typename T>
-    std::shared_ptr<ComponentStorage<T>> GetRawStorage();
+    std::shared_ptr<ComponentStorage<T>> GetRawStorage()
+    {
+        // ToDo: Логика получения указателя на хранилище по его типу из мапы
+        // или создания хранилища, если его еще нет
+    }
 
     template <typename T>
-    ComponentStorage<T>& GetStorage();
+    ComponentStorage<T>& GetStorage()
+    {
+        // ToDo: Логика получения ссылки на хранилище по его типу из мапы
+        // или создания хранилища, если его еще нет
+    }
 };
 
 #endif //WORLD_H

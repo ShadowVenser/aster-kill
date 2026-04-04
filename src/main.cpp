@@ -9,6 +9,7 @@
 #include "Sample/Systems/MovementSystem.h"
 
 int main() {
+    // Пример использования
     setlocale(LC_ALL, "");
 
     const int wWidth = 1280;

@@ -10,6 +10,7 @@ class FilterBuilder
     std::vector<std::shared_ptr<BaseComponentStorage>> _componentStorages;
 
 public:
+    // ToDo:
     FilterBuilder(World& world);
 
     template <typename T>

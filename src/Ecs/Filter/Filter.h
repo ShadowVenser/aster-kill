@@ -16,6 +16,7 @@ class Filter {
     size_t FindMinComponentStorage() const;
 
 public:
+    // ToDo:
     Filter(World& world,
         const std::vector<std::shared_ptr<BaseComponentStorage>>& componentStorages);
 
@@ -38,6 +39,7 @@ public:
         using value_type = int;
         using difference_type = std::ptrdiff_t;
 
+        // ToDo: Логика поиска первой подходящей сущности для итератоора
         Iterator(World& world,
             const std::vector<std::shared_ptr<BaseComponentStorage>>& storages,
             const std::span<const int>& minStorageEntities, const size_t minStorageIndex,
