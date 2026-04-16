@@ -2,10 +2,10 @@
 #define ENTITYID_H
 
 #include <iostream>
-#include <vector>
+#include <cstdint>
 
 class EntityId {
-    std::vector<int> _components;
+    uint64_t _components;
     int _gen;
 
 public:
@@ -18,7 +18,7 @@ public:
     int RemoveComponent(int component);
 
     bool IsRemoved() const;
-    const std::vector<int>& Components() const;
+    uint64_t Components() const;
     int Gen() const;
 
     void Remove();
