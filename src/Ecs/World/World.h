@@ -11,7 +11,6 @@
 #include "../Components/ComponentStorage.hpp"
 
 class Filter;
-class SparseFilter;
 
 class World final : public internal::IWorldInternal {
     
@@ -21,7 +20,7 @@ class World final : public internal::IWorldInternal {
     std::vector<int> _freeEntities;
 
     std::unordered_map<uint64_t, std::shared_ptr<Filter>> _worldFilters;
-    std::unordered_map<int, std::vector<std::shared_ptr<SparseFilter>>> _listeners;
+    std::unordered_map<int, std::vector<std::shared_ptr<Filter>>> _listeners;
 
     std::unordered_map<size_t, std::shared_ptr<BaseComponentStorage>> _componentStoragesHash;
     std::vector<std::shared_ptr<BaseComponentStorage>> _componentStorages;
@@ -43,15 +42,38 @@ public:
 
     std::shared_ptr<Filter> GetFilter(uint64_t filterMask);
     void AddFilter(uint64_t filterMask, std::shared_ptr<Filter> filter);
-    void AddListener(uint64_t filterMask, std::shared_ptr<SparseFilter> filter);
+    void AddListener(uint64_t filterMask, std::shared_ptr<Filter> filter);
 
     template <typename T>
-    std::shared_ptr<ComponentStorage<T>> GetRawStorage();
+    std::shared_ptr<ComponentStorage<T>> GetRawStorage()
+    {
+        const auto typeHash = typeid(T).hash_code();
+        const auto foundStorageIt = _componentStoragesHash.find(typeHash);
+
+        if (foundStorageIt != _componentStoragesHash.end()) {
+            return std::static_pointer_cast<ComponentStorage<T>>(foundStorageIt->second);
+        }
+
+        auto storage = std::make_shared<ComponentStorage<T>>(*this, _storagesCount);
+        
+        if ((size_t)_storagesCount == _componentStorages.capacity())
+            _componentStorages.reserve(_storagesCount << 1);
+        _componentStorages.push_back(storage);
+        _componentStoragesHash.insert({typeHash, storage});
+
+        ++_storagesCount;
+
+        return storage;
+    }
 
     template <typename T>
-    ComponentStorage<T>& GetStorage();
+    ComponentStorage<T>& GetStorage()
+    {
+        return *GetRawStorage<T>();
+    }
 
     std::shared_ptr<BaseComponentStorage> GetStorageById(int storageId);
+    int GetStoragesCount() const;
 
 };
 

@@ -1,14 +1,31 @@
 #include "OptimisedFilter.h"
+#include <cstdint>
 #include "Filter.h"
 
 OptimisedFilter::OptimisedFilter(
     World& world,
-    std::function<std::span<const int>()> getter
+    uint64_t mask,
+    std::function<std::span<const int>()> getter,
+    std::function<void(int)> add,
+    std::function<void(int)> remove
 ):
-    Filter(world),
-    _GetFiltered(getter)
+    Filter(world, mask),
+    _GetFiltered(getter),
+    _AddToFilter(add),
+    _RemoveFromFilter(remove)
 {}
 
-std::span<const int> OptimisedFilter::GetView() const {
+std::span<const int> OptimisedFilter::GetView() const 
+{
     return _GetFiltered();
+}
+
+void OptimisedFilter::Add(const int e)
+{
+    _AddToFilter(e);
+}
+
+void OptimisedFilter::Remove(const int e)
+{
+    _RemoveFromFilter(e);
 }

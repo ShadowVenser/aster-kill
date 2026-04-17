@@ -15,13 +15,33 @@ public:
     FilterBuilder(World& world);
 
     template <typename T>
-    FilterBuilder& With();
+    FilterBuilder& With()
+    {
+        int storageId = _world.GetRawStorage<T>()->Id();
+        _filterMask |= 1 << storageId;
+        return *this; 
+    }
 
     template<typename T>
-    FilterBuilder& Without();
+    FilterBuilder& Without()
+    {
+        int storageId = _world.GetRawStorage<T>()->Id();
+        _filterMask = _filterMask ? _filterMask : ((1 << _world.GetStoragesCount()) - 1);
+        _filterMask ^= 1 << storageId;
+        return *this; 
+    }
 
     template<typename T>
-    FilterBuilder& OptimisedBy();
+    FilterBuilder& OptimisedBy()
+    {
+        #ifdef DEBUG
+            if (_optimiser) 
+                throw std::runtime_error("Filter already optimised!");
+        #endif
+        if (!_optimiser)
+            _optimiser = _world.GetRawStorage<T>();
+        return *this; 
+    }
 
     std::shared_ptr<Filter> Build() const;
 };

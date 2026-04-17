@@ -14,36 +14,6 @@ FilterBuilder::FilterBuilder(World& world):
     _world(world)
 {}
 
-template <typename T>
-FilterBuilder& FilterBuilder::With()
-{
-    int storageId = _world.GetRawStorage<T>()->Id();
-    _filterMask |= 1 << storageId;
-    return *this; 
-}
-
-template <typename T>
-FilterBuilder& FilterBuilder::Without()
-{
-    int storageId = _world.GetRawStorage<T>()->Id();
-    _filterMask = _filterMask ? _filterMask : ~_filterMask;
-    _filterMask ^= 1 << storageId;
-    return *this; 
-}
-
-template <typename T>
-FilterBuilder& FilterBuilder::OptimisedBy()
-{
-    #ifdef DEBUG
-        if (_optimiser) 
-            throw std::runtime_error("Filter already optimised!");
-    #endif
-    if (!_optimiser)
-        _optimiser = _world.GetRawStorage<T>();
-    return *this; 
-}
-
-
 std::shared_ptr<Filter> FilterBuilder::Build() const
 {
     if (auto filter = _world.GetFilter(_filterMask); filter)
@@ -59,8 +29,14 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
         else
         {
             std::function<std::span<const int>()> getter = [optimiser=_optimiser](){return optimiser->_Filtered();};
-            std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, getter);
+            std::function<void(int)> add = [optimiser=_optimiser](int e){return optimiser->_AddToFilter(e);};
+            std::function<void(int)> remove = [optimiser=_optimiser](int e){return optimiser->_RemoveFromFilter(e);};
+            
+            std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, _filterMask, getter, add, remove);
+
             _world.AddFilter(_filterMask, filter);
+            _world.AddListener(_filterMask ^ (1 << _optimiser->Id()), filter);
+
             return filter;
         }
     }
@@ -73,14 +49,13 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
 
     while (mask) 
     {
-        id += std::countr_zero(mask);
+        id = std::countr_zero(mask);
         if (auto current = _world.GetStorageById(id); !storage || current->Entities().size() < size)
         {
             storage = current;
             size = current->Entities().size();
         }
         mask &= mask - 1;
-        id++;
     }
 
     for (auto e: storage->Entities())

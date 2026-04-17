@@ -6,13 +6,11 @@ public:
     SparseFilter(World& world, uint64_t filterMask);
     
     std::span<const int> GetView() const override;
-    uint64_t GetMask() const;
 
-    void Add(const int e);
-    void Remove(const int e);
+    void Add(const int e) override;
+    void Remove(const int e) override;
 
-    private:
-    uint64_t _filterMask;
+private:
 
     int _count;
     std::vector<int> _sparse;

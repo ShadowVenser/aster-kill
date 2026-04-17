@@ -2,6 +2,11 @@
 #include <bit>
 #include <string>
 
+EntityId::EntityId(const int id, const int gen):
+    _components(0), _gen(gen), Id(id)
+{ }
+
+
 void EntityId::AddComponent(const int component)
 {
     _components |= 1 << component;
@@ -9,7 +14,7 @@ void EntityId::AddComponent(const int component)
 
 int EntityId::RemoveComponent(const int component)
 {
-    if (uint64_t mask = 1 << component; (_components && mask) == mask)
+    if (uint64_t mask = 1 << component; (_components & mask) == mask)
         _components ^= mask;
     return std::popcount(_components);
 }
