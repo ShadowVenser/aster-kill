@@ -16,7 +16,7 @@ class SystemsManager
     World& _world;
 public:
     // ToDo:
-    SystemsManager(World& world);
+    SystemsManager(World& world): _world(world) {}
 
     SystemsManager& AddInitializer(std::shared_ptr<IInitializer> initializer);
     SystemsManager& AddSystem(std::shared_ptr<ISystem> system);

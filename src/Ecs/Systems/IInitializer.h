@@ -9,7 +9,7 @@ protected:
     World& world;
 
 public:
-    IInitializer(World &world);
+    IInitializer(World &world): world(world) {}
     const World& GetWorld() const;
 
     virtual ~IInitializer() = default;

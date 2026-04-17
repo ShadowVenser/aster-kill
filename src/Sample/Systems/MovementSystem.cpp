@@ -1,4 +1,6 @@
 #include "MovementSystem.h"
+#include "KillerSystem.h"
+#include "../Components/KillMeComponent.h"
 
 void MovementSystem::Print(int ent)
 {
@@ -14,9 +16,9 @@ void MovementSystem::OnInit()
 
 void MovementSystem::OnUpdate()
 {
-    for (const auto event : _moveInputEvents)
+    for (const auto event : _moveInputEvents->GetView())
     {
-        for (const auto ent : _moveables)
+        for (const auto ent : _moveables->GetView())
         {
             auto& position = _positionComponents.Get(ent);
             auto& movement = _movementComponents.Get(ent);
@@ -27,6 +29,6 @@ void MovementSystem::OnUpdate()
             Print(ent);
         }
 
-        world.RemoveEntity(event);
+        world.GetRawStorage<KillMeComponent>()->Add(event, {});
     }
 }

@@ -1,8 +1,10 @@
+#pragma once
+
 #include <functional>
 #include <span>
 #include "Filter.h"
 
-class OptimisedFilter final: public Filter 
+class OptimisedFilter : public Filter 
 {
 
 public:
@@ -12,6 +14,12 @@ public:
         std::function<std::span<const int>()> getter,
         std::function<void(int)> add,
         std::function<void(int)> remove
+    );
+
+    OptimisedFilter(
+        World& world,
+        uint64_t mask,
+        std::function<std::span<const int>()> getter
     );
 
     std::span<const int> GetView() const override;

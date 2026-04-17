@@ -7,9 +7,11 @@
 class EntityId {
     uint64_t _components;
     int _gen;
+    
+    public:
 
-public:
     const int Id;
+    bool onDelete = false;
 
     // ToDo:
     EntityId(const int id, const int gen);

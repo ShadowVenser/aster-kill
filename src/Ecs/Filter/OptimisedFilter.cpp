@@ -15,6 +15,17 @@ OptimisedFilter::OptimisedFilter(
     _RemoveFromFilter(remove)
 {}
 
+OptimisedFilter::OptimisedFilter(
+    World& world,
+    uint64_t mask,
+    std::function<std::span<const int>()> getter
+):
+    Filter(world, mask),
+    _GetFiltered(getter),
+    _AddToFilter([](int){}),
+    _RemoveFromFilter([](int){})
+{}
+
 std::span<const int> OptimisedFilter::GetView() const 
 {
     return _GetFiltered();

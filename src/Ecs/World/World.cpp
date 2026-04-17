@@ -26,7 +26,7 @@ void World::EntityComponentsChanged(const int e, const int storageId, const bool
                     listener->Remove(e);
         }
         const int newCCount = entity.RemoveComponent(storageId);
-        if (!newCCount)
+        if (!newCCount && !entity.onDelete)
             RemoveEntity(e);
     }
 }
@@ -58,6 +58,7 @@ int World::CreateEntity()
 void World::RemoveEntity(int e)
 {
     auto& entity = _entities[e];
+    entity.onDelete = true;
     if (entity.IsRemoved())
         return;
 
@@ -70,6 +71,7 @@ void World::RemoveEntity(int e)
         components &= components - 1;
     }
     entity.Remove();
+    entity.onDelete = false;
     _freeEntities.push_back(e);
 }
 

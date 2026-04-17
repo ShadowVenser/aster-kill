@@ -1,6 +1,7 @@
 #ifndef MOVEMENTSYSTEM_H
 #define MOVEMENTSYSTEM_H
 
+#include <memory>
 #include "../../Ecs/Filter/Filter.h"
 #include "../../Ecs/Filter/FilterBuilder.h"
 #include "../../Ecs/Systems/ISystem.h"
@@ -13,8 +14,8 @@ class MovementSystem final : public ISystem {
     ComponentStorage<PositionComponent>& _positionComponents;
     ComponentStorage<MovementComponent>& _movementComponents;
 
-    Filter _moveables;
-    Filter _moveInputEvents;
+    std::shared_ptr<Filter> _moveables;
+    std::shared_ptr<Filter> _moveInputEvents;
 
     void Print(int ent);  // Это тоже можно вынести в отдельную систему
 

@@ -1,5 +1,6 @@
 #include "FilterBuilder.h"
 
+#include <bit>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -18,6 +19,16 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
 {
     if (auto filter = _world.GetFilter(_filterMask); filter)
         return filter; 
+    if (std::popcount(_filterMask) == 0) return nullptr;
+    if (std::popcount(_filterMask) == 1) 
+    {
+        auto storage = _world.GetStorageById(std::countr_zero(_filterMask));
+        auto getter = [storage](){return storage->Entities();};
+
+        std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, _filterMask, getter);
+        _world.AddFilter(_filterMask, filter);
+        return filter;
+    } 
     if (_optimiser) 
     {
         if (!_optimiser->_BindFilter(_filterMask))
@@ -29,8 +40,8 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
         else
         {
             std::function<std::span<const int>()> getter = [optimiser=_optimiser](){return optimiser->_Filtered();};
-            std::function<void(int)> add = [optimiser=_optimiser](int e){return optimiser->_AddToFilter(e);};
-            std::function<void(int)> remove = [optimiser=_optimiser](int e){return optimiser->_RemoveFromFilter(e);};
+            std::function<void(int)> add = [optimiser=_optimiser](int e){optimiser->_AddToFilter(e);};
+            std::function<void(int)> remove = [optimiser=_optimiser](int e){optimiser->_RemoveFromFilter(e);};
             
             std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, _filterMask, getter, add, remove);
 
