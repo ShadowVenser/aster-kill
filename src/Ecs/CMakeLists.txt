@@ -13,6 +13,10 @@ add_library(${LIB_NAME}
     ${SOURCES})
 
 target_compile_definitions(${LIB_NAME} PUBLIC -DDEBUG)
+
 target_compile_options(${LIB_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
 target_compile_options(${LIB_NAME} PUBLIC -g3 -O0)
+add_compile_options(-fsanitize=address -g)
+add_link_options(-fsanitize=address)
+
 target_compile_features(${LIB_NAME} PRIVATE cxx_std_20)

@@ -9,14 +9,14 @@
 
 class InputSystem : public ISystem {
 
-    sf::RenderWindow& _window; // так делать не надо точно
+    std::vector<sf::Event>& _events; // так делать не надо точно
 
     ComponentStorage<MoveInputEvent>& _eventComponents;
 
 public:
-    InputSystem(World &world, sf::RenderWindow& window)
+    InputSystem(World &world, std::vector<sf::Event>& events)
         : ISystem(world),
-        _window(window),
+        _events(events),
         _eventComponents(world.GetStorage<MoveInputEvent>())
     {
 

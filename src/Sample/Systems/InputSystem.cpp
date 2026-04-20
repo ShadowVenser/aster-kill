@@ -6,16 +6,13 @@ void InputSystem::OnInit()
 
 void InputSystem::OnUpdate()
 {
-    while (const std::optional event = _window.pollEvent())
+    for (auto e: _events)
     {
-        if (event->is<sf::Event::Closed>())
+        if (auto kse = e.getIf<sf::Event::KeyPressed>(); kse)
         {
-            _window.close();
-        }
-        else if (event->getIf<sf::Event::KeyPressed>())
-        {
-            const int eventEnt = world.CreateEntity();
-            _eventComponents.Add(eventEnt, MoveInputEvent());
+            auto eventEntity = world.CreateEntity();
+            _eventComponents.Add(eventEntity, {});
         }
     }
+    _events.clear();
 }

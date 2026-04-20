@@ -23,15 +23,6 @@ public:
     }
 
     template<typename T>
-    FilterBuilder& Without()
-    {
-        int storageId = _world.GetRawStorage<T>()->Id();
-        _filterMask = _filterMask ? _filterMask : ((1 << _world.GetStoragesCount()) - 1);
-        _filterMask ^= 1 << storageId;
-        return *this; 
-    }
-
-    template<typename T>
     FilterBuilder& OptimisedBy()
     {
         #ifdef DEBUG

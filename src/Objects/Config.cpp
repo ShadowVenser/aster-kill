@@ -2,17 +2,20 @@
 #include <fstream>
 #include <stdexcept>
 
-Config Config::_config {};
+Config::Config(const std::string& path) 
+{
+    Init(path);
+}
 
 void Config::Init(const std::string& path)
 {
     std::ifstream cfgFile(path);
     if (!cfgFile.is_open())
         throw std::runtime_error("Config is not allowed");
-    cfgFile >> _config._json_cfg;
+    cfgFile >> _json_cfg;
 }
 
-const Config::json& Config::cfg() 
+const Config::json& Config::cfg() const
 {
-    return _config._json_cfg;
+    return _json_cfg;
 }

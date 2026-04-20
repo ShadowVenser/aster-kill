@@ -10,5 +10,5 @@ void InitSystem::OnInit()
     auto& movementsStorage = world.GetStorage<MovementComponent>();
 
     positionsStorage.Add(player, PositionComponent(0, 0));
-    movementsStorage.Add(player, MovementComponent(5, sf::Vector2f(0, 1)));
+    movementsStorage.Add(player, MovementComponent(5, {0, 1}));
 }

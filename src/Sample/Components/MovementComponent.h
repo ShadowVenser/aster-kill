@@ -1,12 +1,12 @@
 #ifndef MOVEMENTCOMPONENT_H
 #define MOVEMENTCOMPONENT_H
 
-#include <SFML/System/Vector2.hpp>
+#include "../../Objects/Drawer.h"
 
 struct MovementComponent
 {
     float Speed;
-    sf::Vector2f Direction;
+    my_game::vec2<float> Direction;
 };
 
 #endif //MOVEMENTCOMPONENT_H

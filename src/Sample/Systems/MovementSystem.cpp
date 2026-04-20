@@ -9,26 +9,20 @@ void MovementSystem::Print(int ent)
     std::cout << ent << " Pos: " << position.X << ", " << position.Y << std::endl;
 }
 
-void MovementSystem::OnInit()
-{
-
-}
-
 void MovementSystem::OnUpdate()
 {
-    for (const auto event : _moveInputEvents->GetView())
+    for (const auto ent : _moveables->GetView())
     {
-        for (const auto ent : _moveables->GetView())
-        {
-            auto& position = _positionComponents.Get(ent);
-            auto& movement = _movementComponents.Get(ent);
+        auto& position = _positionComponents.Get(ent);
+        auto& movement = _movementComponents.Get(ent);
 
-            position.X += movement.Speed * movement.Direction.x;
-            position.Y += movement.Speed * movement.Direction.y;
+        position.X += movement.Speed * movement.Direction.x;
+        position.Y += movement.Speed * movement.Direction.y;
+    }
 
-            Print(ent);
-        }
-
-        world.GetRawStorage<KillMeComponent>()->Add(event, {});
+    for (auto e: _rotateComponent.Entities())
+    {
+        auto& rotate = _rotateComponent.Get(e);
+        rotate.currentDegree = static_cast<int>(rotate.currentDegree + rotate.rotateSpeed + 360) % 360;
     }
 }

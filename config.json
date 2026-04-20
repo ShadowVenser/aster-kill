@@ -1,6 +1,51 @@
 {
+    "name": "AsterKill",
+    "version": "1.0.0",
     "window": {
         "width": 1280,
         "height": 720
+    },
+
+    "asteroid": {
+        "speed": {
+            "min": 0.5,
+            "max": 1.5
+        },
+        "rotate": {
+            "min": -3,
+            "max": 3
+        },
+        "types": [
+            {
+                "id": 1,
+                "score": 150,
+                "collision": 39
+            }, {
+                "id": 2,
+                "score": 100,
+                "collision": 24
+            }, {
+                "id": 3,
+                "score": 150,
+                "collision": 14
+            }
+        ],
+        "source": {
+            "min": 0.0,
+            "max": 1.0
+        },
+        "destonation": {
+            "min": 0.1,
+            "max": 0.9
+        },
+        "texture": {
+            "path": "assets/pics/aster.png",
+            "sprite_count": 6,
+            "types": [1, 1, 2, 2, 3, 3]
+        },
+        "spawn_time": {
+            "min": 500,
+            "max": 1000
+        }
     }
 }
