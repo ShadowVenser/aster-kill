@@ -47,5 +47,9 @@
             "min": 500,
             "max": 1000
         }
+    },
+    "font": {
+        "size": 22,
+        "path": "assets/fonts/atari.otf"
     }
 }

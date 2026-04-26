@@ -41,6 +41,7 @@ int main() {
     while (d.isOpen()) {
         d.pollEvent(events);
         systems.Update();
+        // d.DrawGameOver();
     }
 
     return 0;

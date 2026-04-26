@@ -10,8 +10,8 @@ void InputSystem::OnUpdate()
     {
         if (auto kse = e.getIf<sf::Event::KeyPressed>(); kse)
         {
-            auto eventEntity = world.CreateEntity();
-            _eventComponents.Add(eventEntity, {});
+            // auto eventEntity = world.CreateEntity();
+            // _eventComponents.Add(eventEntity, {});
         }
     }
     _events.clear();

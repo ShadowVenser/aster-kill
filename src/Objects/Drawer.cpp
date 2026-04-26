@@ -1,6 +1,8 @@
 #include "Drawer.h"
 #include <cmath>
 #include <memory>
+#include <string>
+#include "SFML/Graphics/Font.hpp"
 #include "SFML/System/Angle.hpp"
 #include "SFML/System/Time.hpp"
 
@@ -52,6 +54,11 @@ Drawer::Drawer(const Config& cfg):
                 .collisionR=asteroid.at("score").get<int>()
             }
         });
+    }
+
+    if (_font.openFromFile(cfg.cfg().at("font").at("path").get<std::string>()))
+    {
+        _gameOver = std::make_shared<sf::Text>(_font, "", cfg.cfg().at("font").at("size").get<int>());
     }
 }
 
@@ -129,4 +136,28 @@ my_game::vec2<int> Drawer::GetWindowSize()
 {
     auto size = _window->getSize();
     return {(int)size.x, (int)size.y};
+}
+
+void Drawer::DrawGameOver()
+{
+    static bool isFirst = true;
+    
+    if (isFirst)
+    {
+        if (_gameOver)
+        {
+            _gameOver->setString("Game Over\nScore: " + std::to_string(_score));
+            _gameOver->setPosition({
+                (_window->getSize().x - _gameOver->getGlobalBounds().size.x) / 2,
+                (_window->getSize().y - _gameOver->getGlobalBounds().size.y) / 2
+            });
+        }
+        isFirst = false;
+    }
+    _window->clear();
+    if (_gameOver)
+    {
+        _window->draw(*_gameOver);
+    }
+    _window->display();
 }

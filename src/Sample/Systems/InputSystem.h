@@ -11,15 +11,13 @@ class InputSystem : public ISystem {
 
     std::vector<sf::Event>& _events; // так делать не надо точно
 
-    ComponentStorage<MoveInputEvent>& _eventComponents;
+    // ComponentStorage<MoveInputEvent>& _eventComponents;
 
 public:
     InputSystem(World &world, std::vector<sf::Event>& events)
         : ISystem(world),
-        _events(events),
-        _eventComponents(world.GetStorage<MoveInputEvent>())
+        _events(events)
     {
-
     }
 
     void OnInit() override;

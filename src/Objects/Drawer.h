@@ -11,6 +11,8 @@
 
 #include "Config.h"
 #include "SFML/Graphics/Rect.hpp"
+#include "SFML/Graphics/Text.hpp"
+#include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Clock.hpp"
 
 namespace my_game {
@@ -61,11 +63,15 @@ public:
     void Draw(my_game::type type, my_game::vec2<float> pos);
     void Display();
 
+    void SetScore();
+    void DrawGameOver();
+
     std::function<sf::Time()> CreateSpawnTimeGetter();
 
     my_game::AsteroidProps GetAsteroid();
 
 private:
+    int _score = 150;
     std::unique_ptr<sf::RenderWindow> _window;
 
     std::vector<sf::IntRect> _asterRects;
@@ -78,4 +84,7 @@ private:
 
     std::unordered_map<my_game::type, std::shared_ptr<sf::Texture>> _textures;
     std::unordered_map<my_game::type, std::shared_ptr<sf::Sprite>> _sprites;
+
+    sf::Font _font;
+    std::shared_ptr<sf::Text> _gameOver;
 };

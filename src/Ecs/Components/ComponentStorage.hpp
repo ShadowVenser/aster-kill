@@ -150,9 +150,12 @@ public:
         _Resize((e / 64 + 1) * 64, _data.size() <= (size_t)(_count + 1) ? _data.size() + 64 : _data.size());
         
         if (_isBinded && ((_world.GetEntityComponents(e) | 1 << _id)& _filterMask) == _filterMask) {
-            _data[_count] = _data[_matchedCount];
-            _dense[_count] = _dense[_matchedCount];
-            _sparse[_dense[_matchedCount]] = _count;
+            if (_matchedCount < _count) 
+            {
+                _data[_count] = _data[_matchedCount];
+                _dense[_count] = _dense[_matchedCount];
+                _sparse[_dense[_matchedCount]] = _count;
+            }
 
             _data[_matchedCount] = value;
             _dense[_matchedCount] = e;
@@ -192,8 +195,6 @@ public:
             _sparse[_dense[_matchedCount]] = _matchedCount;
 
             _sparse[e] = -1;
-
-            --_count;
         } 
         else 
         {
