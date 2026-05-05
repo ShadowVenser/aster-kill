@@ -5,7 +5,6 @@
 #include "../../Objects/Drawer.h"
 
 #include "../../Ecs/Systems/ISystem.h"
-#include "../../Ecs/Filter/FilterBuilder.h"
 
 #include "../Components/PositionComponent.h"
 #include "../Components/RotateComponent.h"
@@ -19,14 +18,7 @@ public:
         _drawer(drawer),
         _positions(world.GetStorage<PositionComponent>()),
         _rotates(world.GetStorage<RotateComponent>()),
-        _sprites(world.GetStorage<SpriteComponent>()),
-        _rotatable(
-            FilterBuilder{world}
-                .With<RotateComponent>()
-                .With<SpriteComponent>()
-                .OptimisedBy<SpriteComponent>()
-                .Build()
-        )
+        _sprites(world.GetStorage<SpriteComponent>())
     {}
 
     void OnInit() override {}
@@ -39,6 +31,4 @@ private:
     ComponentStorage<PositionComponent>& _positions;
     ComponentStorage<RotateComponent>& _rotates;
     ComponentStorage<SpriteComponent>& _sprites;
-
-    std::shared_ptr<Filter> _rotatable;
 };

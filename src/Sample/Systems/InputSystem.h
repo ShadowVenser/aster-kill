@@ -5,18 +5,23 @@
 
 #include "../../Ecs/Systems/ISystem.h"
 
-#include "../Components/MoveInputEvent.h"
+#include "../Components/MoveInputEventComponent.h"
+#include "../Components/ShootEventComponent.h"
 
 class InputSystem : public ISystem {
 
-    std::vector<sf::Event>& _events; // так делать не надо точно
+    std::vector<sf::Event>& _events;
 
-    // ComponentStorage<MoveInputEvent>& _eventComponents;
+    ComponentStorage<MoveInputEventComponent>& _moveEventComponents;
+    ComponentStorage<ShootEventComponent>& _shootEventComponent;
 
 public:
     InputSystem(World &world, std::vector<sf::Event>& events)
         : ISystem(world),
-        _events(events)
+        _events(events),
+        _moveEventComponents(world.GetStorage<MoveInputEventComponent>()),
+        _shootEventComponent(world.GetStorage<ShootEventComponent>())
+
     {
     }
 
@@ -24,7 +29,5 @@ public:
 
     void OnUpdate() override;
 };
-
-
 
 #endif //INPUTSYSTEM_H

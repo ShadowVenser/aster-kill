@@ -127,7 +127,9 @@ public:
 
     bool Has(const int e) const override
     {
-        return _sparse[e] != -1;
+        if (_sparse.size() > static_cast<size_t>(e))
+            return _sparse[e] != -1;
+        return false;
     }
 
     T& Get(const int e)

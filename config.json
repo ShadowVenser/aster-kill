@@ -51,5 +51,18 @@
     "font": {
         "size": 22,
         "path": "assets/fonts/atari.otf"
+    },
+    "player": {
+        "speed": 4.0,
+        "pos": {
+            "x": 0.5,
+            "y": 0.8
+        },
+        "sprite": "assets/pics/spaceship.png"
+    },
+    "bullet": {
+        "speed": 3.0,
+        "cooldown": 200,
+        "sprite": "assets/pics/bullet.png"
     }
 }

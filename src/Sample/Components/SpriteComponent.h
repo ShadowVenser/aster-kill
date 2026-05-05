@@ -4,5 +4,5 @@
 
 struct SpriteComponent {
     my_game::type type;
-    int sId;
+    int sId = 0;
 };

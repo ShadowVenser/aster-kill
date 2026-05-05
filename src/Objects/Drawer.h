@@ -56,14 +56,17 @@ public:
     Drawer(const Config& cfg);
     void pollEvent(std::vector<sf::Event>& events);
     bool isOpen();
+
     my_game::vec2<int> GetWindowSize();
+    my_game::vec2<int> GetSpriteSize(my_game::type id);
 
     void InitDraw();
     void Draw(my_game::type type, my_game::vec2<float> pos, int rectId, float rotate);
     void Draw(my_game::type type, my_game::vec2<float> pos);
     void Display();
 
-    void SetScore();
+    void SetScore(int val);
+
     void DrawGameOver();
 
     std::function<sf::Time()> CreateSpawnTimeGetter();
@@ -71,16 +74,13 @@ public:
     my_game::AsteroidProps GetAsteroid();
 
 private:
-    int _score = 150;
+    int _score = 0;
     std::unique_ptr<sf::RenderWindow> _window;
 
     std::vector<sf::IntRect> _asterRects;
     std::vector<int> _typeOfAsterRect;
     std::unordered_map<int, my_game::AsteroidProps> _asteroids;
     Randomiser _rnd;
-
-    sf::Time _nextAster;
-    sf::Clock _spawnClock;
 
     std::unordered_map<my_game::type, std::shared_ptr<sf::Texture>> _textures;
     std::unordered_map<my_game::type, std::shared_ptr<sf::Sprite>> _sprites;

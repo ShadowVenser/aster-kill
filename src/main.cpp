@@ -12,6 +12,7 @@
 #include "Sample/Systems/InitSystem.h"
 #include "Sample/Systems/InputSystem.h"
 #include "Sample/Systems/KillerSystem.h"
+#include "Sample/Systems/MoveEventSystem.h"
 #include "Sample/Systems/MovementSystem.h"
 #include "Sample/Systems/RenderSystem.h"
 #include "Sample/Systems/SpawnSystem.h"
@@ -24,24 +25,34 @@ int main() {
 
     const Config config("config.json");
     std::vector<sf::Event> events;
+    bool isFailed = false;
 
     Drawer d(config);
     
     World world;
     SystemsManager systems(world);
-    // systems.AddInitializer(std::make_shared<InitSystem>(world));
-    // systems.AddSystem(std::make_shared<InputSystem>(world, events));
-
+    systems.AddInitializer(std::make_shared<InitSystem>(world, config, d));
+    systems.AddSystem(std::make_shared<InputSystem>(world, events));
+    systems.AddSystem(std::make_shared<MoveEventSystem>(world));
     systems.AddSystem(std::make_shared<CleanerSystem>(world, &d));
     systems.AddSystem(std::make_shared<SpawnSystem>(world, &d));
     systems.AddSystem(std::make_shared<RenderSystem>(world, &d));
     systems.AddSystem(std::make_shared<MovementSystem>(world));
     systems.AddSystem(std::make_shared<KillerSystem>(world));
 
-    while (d.isOpen()) {
+
+    while (d.isOpen() && !isFailed) 
+    {
         d.pollEvent(events);
         systems.Update();
         // d.DrawGameOver();
+    }
+
+    while (d.isOpen())
+    {
+        d.pollEvent(events);
+        d.DrawGameOver();
+        events.clear();
     }
 
     return 0;

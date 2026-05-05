@@ -11,8 +11,8 @@ set(SOURCES main.cpp
         Sample/Systems/CleanerSystem.cpp
         Sample/Systems/RenderSystem.cpp
         Sample/Systems/SpawnSystem.cpp
+        Sample/Systems/MoveEventSystem.cpp
 
-        Sample/Components/MoveInputEvent.h
         Sample/Components/PositionComponent.h
         Sample/Components/MovementComponent.h
 

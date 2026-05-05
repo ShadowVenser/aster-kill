@@ -1,13 +1,5 @@
 #include "MovementSystem.h"
-#include "KillerSystem.h"
-#include "../Components/KillMeComponent.h"
 
-void MovementSystem::Print(int ent)
-{
-    auto& position = _positionComponents.Get(ent);
-
-    std::cout << ent << " Pos: " << position.X << ", " << position.Y << std::endl;
-}
 
 void MovementSystem::OnUpdate()
 {

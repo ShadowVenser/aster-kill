@@ -18,8 +18,7 @@ Drawer::Drawer(const Config& cfg):
     _window->setFramerateLimit(60);
     _window->setVerticalSyncEnabled(true);
 
-    _nextAster = sf::milliseconds(_rnd.GetSpawnTime());
-    _spawnClock.restart();
+    // ---------- ASTEROIDS INIT ----------
 
     _textures.insert({
         my_game::type::Asteroid, 
@@ -60,6 +59,34 @@ Drawer::Drawer(const Config& cfg):
     {
         _gameOver = std::make_shared<sf::Text>(_font, "", cfg.cfg().at("font").at("size").get<int>());
     }
+
+    // ---------- PLAYER INIT ----------
+    
+    _textures.insert({
+        my_game::type::Player, 
+        std::make_shared<sf::Texture>(
+            cfg.cfg().at("player").at("sprite").get<std::string>()
+        )}
+    );
+
+    _sprites.insert({
+        my_game::type::Player,
+        std::make_shared<sf::Sprite>(*_textures[my_game::type::Player])
+    });
+
+    // ---------- BULLET INIT ----------
+    
+    _textures.insert({
+        my_game::type::Bullet, 
+        std::make_shared<sf::Texture>(
+            cfg.cfg().at("bullet").at("sprite").get<std::string>()
+        )}
+    );
+
+    _sprites.insert({
+        my_game::type::Bullet,
+        std::make_shared<sf::Sprite>(*_textures[my_game::type::Bullet])
+    });
 }
 
 void Drawer::pollEvent(std::vector<sf::Event>& events)
@@ -160,4 +187,18 @@ void Drawer::DrawGameOver()
         _window->draw(*_gameOver);
     }
     _window->display();
+}
+
+void Drawer::SetScore(int val)
+{
+    _score = val;
+}
+
+my_game::vec2<int> Drawer::GetSpriteSize(my_game::type id)
+{
+    auto& rect = _sprites[id]->getTextureRect();
+    return {
+        .x = rect.size.x,
+        .y = rect.size.y
+    };
 }

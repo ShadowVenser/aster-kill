@@ -7,7 +7,6 @@
 #include "../../Ecs/Filter/FilterBuilder.h"
 #include "../../Ecs/Systems/ISystem.h"
 
-#include "../Components/MoveInputEvent.h"
 #include "../Components/PositionComponent.h"
 #include "../Components/MovementComponent.h"
 #include "../Components/RotateComponent.h"
@@ -18,11 +17,6 @@ class MovementSystem final : public ISystem {
     ComponentStorage<RotateComponent>& _rotateComponent;
 
     std::shared_ptr<Filter> _moveables;
-    std::shared_ptr<Filter> _moveInputEvents;
-
-
-
-    void Print(int ent);  // Это тоже можно вынести в отдельную систему
 
 public:
     MovementSystem(World &world)
@@ -33,9 +27,6 @@ public:
             _moveables(FilterBuilder(world)
                 .With<PositionComponent>()
                 .With<MovementComponent>()
-                .Build()),
-            _moveInputEvents(FilterBuilder(world)
-                .With<MoveInputEvent>()
                 .Build())
     {
     }

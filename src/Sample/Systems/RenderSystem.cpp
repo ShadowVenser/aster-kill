@@ -4,12 +4,11 @@ void RenderSystem::OnUpdate()
 {
     _drawer->InitDraw();
     
-    int count = _rotatable->GetView().size();
     for (int e: _sprites.Entities())
     {
         auto& sprite = _sprites.Get(e);
         auto& pos = _positions.Get(e);
-        if (count > 0)
+        if (_rotates.Has(e))
         {
             auto& rotate = _rotates.Get(e);
             _drawer->Draw(sprite.type, {pos.X, pos.Y}, sprite.sId, rotate.currentDegree);
