@@ -54,7 +54,7 @@ class Drawer
 public:
 
     Drawer(const Config& cfg);
-    void pollEvent(std::vector<sf::Event>& events);
+    void pollEvent(std::vector<sf::Event>& events, my_game::vec2<bool>& isPressed);
     bool isOpen();
 
     my_game::vec2<int> GetWindowSize();

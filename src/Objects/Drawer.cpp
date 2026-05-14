@@ -5,6 +5,7 @@
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/System/Angle.hpp"
 #include "SFML/System/Time.hpp"
+#include "SFML/Window/Keyboard.hpp"
 
 Drawer::Drawer(const Config& cfg):
     _rnd(cfg)
@@ -17,6 +18,8 @@ Drawer::Drawer(const Config& cfg):
     _window = std::make_unique<sf::RenderWindow>(sf::VideoMode({w, h}), name + "\t" + ver);
     _window->setFramerateLimit(60);
     _window->setVerticalSyncEnabled(true);
+
+    _window->setKeyRepeatEnabled(false);
 
     // ---------- ASTEROIDS INIT ----------
 
@@ -50,7 +53,7 @@ Drawer::Drawer(const Config& cfg):
             asteroid.at("id").get<int>(), 
             {
                 .score=asteroid.at("score").get<int>(),
-                .collisionR=asteroid.at("score").get<int>()
+                .collisionR=asteroid.at("collision").get<int>()
             }
         });
     }
@@ -89,7 +92,7 @@ Drawer::Drawer(const Config& cfg):
     });
 }
 
-void Drawer::pollEvent(std::vector<sf::Event>& events)
+void Drawer::pollEvent(std::vector<sf::Event>& events, my_game::vec2<bool>& isPressed)
 {
     while (const std::optional event = _window->pollEvent())
     {
@@ -102,6 +105,12 @@ void Drawer::pollEvent(std::vector<sf::Event>& events)
             events.push_back(*kpe);
         }
     }
+    isPressed.x = false 
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
+    isPressed.y = false 
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
 }
 
 bool Drawer::isOpen()

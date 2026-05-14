@@ -12,6 +12,10 @@ set(SOURCES main.cpp
         Sample/Systems/RenderSystem.cpp
         Sample/Systems/SpawnSystem.cpp
         Sample/Systems/MoveEventSystem.cpp
+        Sample/Systems/CollisionDetectionSystem.cpp
+        Sample/Systems/EndGameSystem.cpp
+        Sample/Systems/ShootingSystem.cpp
+        Sample/Systems/HitSystem.cpp
 
         Sample/Components/PositionComponent.h
         Sample/Components/MovementComponent.h

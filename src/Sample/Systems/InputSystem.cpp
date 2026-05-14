@@ -11,21 +11,26 @@ void InputSystem::OnUpdate()
     {
         if (auto kse = e.getIf<sf::Event::KeyPressed>(); kse)
         {
-            auto eventEntity = world.CreateEntity();
             switch (kse->code) {
-                case sf::Keyboard::Key::Left:
-                    _moveEventComponents.Add(eventEntity, {1, 0});
+                case sf::Keyboard::Key::Space: 
+                {
+                    auto shootEventEntity = world.CreateEntity();
+                    _shootEventComponent.Add(shootEventEntity, { });
                     break;
-                case sf::Keyboard::Key::Right:
-                    _moveEventComponents.Add(eventEntity, {0, 1});
-                    break;
-                case sf::Keyboard::Key::Space:
-                    _shootEventComponent.Add(eventEntity, { });
-                    break;
+                }
                 default:
-                    world.RemoveEntity(eventEntity);
+                    continue;
             }
         }
     }
     _events.clear();
+    
+    if (_isPressed.x || _isPressed.y)
+    {
+        auto moveEventEntity = world.CreateEntity();
+        _moveEventComponents.Add(moveEventEntity, {
+            static_cast<uint8_t>(_isPressed.x ? 1 : 0),
+            static_cast<uint8_t>(_isPressed.y ? 1 : 0)
+        });
+    }
 }
