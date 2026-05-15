@@ -9,7 +9,7 @@ class OptimisedFilter : public Filter
 
 public:
     OptimisedFilter(
-        World& world,
+        // World& world,
         uint64_t mask,
         std::function<std::span<const int>()> getter,
         std::function<void(int)> add,
@@ -17,7 +17,7 @@ public:
     );
 
     OptimisedFilter(
-        World& world,
+        // World& world,
         uint64_t mask,
         std::function<std::span<const int>()> getter
     );

@@ -1,8 +1,8 @@
 #include "SparseFilter.h"
 #include "Filter.h"
 
-SparseFilter::SparseFilter(World& world, uint64_t filterMask):
-    Filter(world, filterMask), _count(0) 
+SparseFilter::SparseFilter(uint64_t filterMask):
+    Filter(filterMask), _count(0) 
 {}
 
 std::span<const int> SparseFilter::GetView() const 

@@ -2,20 +2,17 @@
 #define FILTER_H
 
 #include <cstdint>
-#include <memory>
-#include <ranges>
-#include <utility>
-#include <vector>
-
-#include "../Components/BaseComponentStorage.h"
-#include "../World/World.h"
+#include <span>
 
 class Filter {
-    World& _world;
+    // World& _world;
     uint64_t _mask;
 
 public:
-    Filter(World& world, uint64_t mask): _world(world), _mask(mask) {}
+    Filter(uint64_t mask): 
+        // _world(world), 
+        _mask(mask) 
+    {}
 
     virtual std::span<const int> GetView() const = 0;
 

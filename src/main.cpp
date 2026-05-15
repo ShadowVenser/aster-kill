@@ -1,6 +1,4 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <fstream>
 #include <memory>
 
 #include "Ecs/Systems/SystemsManager.h"

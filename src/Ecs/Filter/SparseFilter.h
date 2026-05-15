@@ -5,7 +5,7 @@
 
 class SparseFilter: public Filter {
 public:
-    SparseFilter(World& world, uint64_t filterMask);
+    SparseFilter(uint64_t filterMask);
     
     std::span<const int> GetView() const override;
 

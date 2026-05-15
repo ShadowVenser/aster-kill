@@ -25,7 +25,7 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
         auto storage = _world.GetStorageById(std::countr_zero(_filterMask));
         auto getter = [storage](){return storage->Entities();};
 
-        std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, _filterMask, getter);
+        std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_filterMask, getter);
         _world.AddFilter(_filterMask, filter);
         return filter;
     } 
@@ -43,7 +43,7 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
             std::function<void(int)> add = [optimiser=_optimiser](int e){optimiser->_AddToFilter(e);};
             std::function<void(int)> remove = [optimiser=_optimiser](int e){optimiser->_RemoveFromFilter(e);};
             
-            std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_world, _filterMask, getter, add, remove);
+            std::shared_ptr<Filter> filter = std::make_shared<OptimisedFilter>(_filterMask, getter, add, remove);
 
             _world.AddFilter(_filterMask, filter);
             _world.AddListener(_filterMask ^ (1 << _optimiser->Id()), filter);
@@ -51,7 +51,7 @@ std::shared_ptr<Filter> FilterBuilder::Build() const
             return filter;
         }
     }
-    std::shared_ptr<SparseFilter> filter = std::make_shared<SparseFilter>(_world, _filterMask);
+    std::shared_ptr<SparseFilter> filter = std::make_shared<SparseFilter>(_filterMask);
     
     uint64_t mask = _filterMask;
     int id = 0;

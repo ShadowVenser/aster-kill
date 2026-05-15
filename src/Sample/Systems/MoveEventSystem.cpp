@@ -1,28 +1,30 @@
 #include "../Systems/MoveEventSystem.h"
-#include <algorithm>
 
 void MoveEventSystem::OnUpdate()
 {
-    auto player = _playerStorage.Entities()[0];
-    auto& playerMovement = _movementComponents.Get(player);
-    
-    auto playerPos = _posStorage.Get(player).X;
-
-    if (_moveEventComponents.Count() == 0)
-        playerMovement.Direction = {0, 0};
-    else
+    for (auto player: _playerPos->GetView())
     {
-        auto fstEvent = _moveEventComponents.Entities()[0];
-        auto dir = _moveEventComponents.Get(fstEvent).side;
-
-        dir.x = playerPos > _borders.x ? dir.x : 0;
-        dir.y = playerPos < _borders.y ? dir.y : 0;
+    // auto player = _playerStorage.Entities()[0];
+        auto& playerMovement = _movementComponents.Get(player);
         
-        playerMovement.Direction.x = static_cast<float>(dir.y) - static_cast<float>(dir.x);
+        auto playerPos = _posStorage.Get(player).X;
 
-        for (auto& e: _moveEventComponents.Entities())
+        if (_moveEventComponents.Count() == 0)
+            playerMovement.Direction = {0, 0};
+        else
         {
-            _killMeStorage.Add(e, { });
+            auto fstEvent = _moveEventComponents.Entities()[0];
+            auto dir = _moveEventComponents.Get(fstEvent).side;
+
+            dir.x = playerPos > _borders.x ? dir.x : 0;
+            dir.y = playerPos < _borders.y ? dir.y : 0;
+            
+            playerMovement.Direction.x = static_cast<float>(dir.y) - static_cast<float>(dir.x);
+
+            for (auto& e: _moveEventComponents.Entities())
+            {
+                _killMeStorage.Add(e, { });
+            }
         }
     }
 }

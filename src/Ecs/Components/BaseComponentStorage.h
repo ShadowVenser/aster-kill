@@ -9,6 +9,7 @@ class FilterBuilder;
 class BaseComponentStorage {
 private:
     friend class FilterBuilder;
+    
     virtual std::span<const int> _Filtered() = 0;
     virtual bool _BindFilter(uint64_t mask) = 0;
     virtual void _AddToFilter(int e) = 0;
