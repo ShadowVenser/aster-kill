@@ -24,6 +24,7 @@ set(SOURCES main.cpp
         Objects/Drawer.cpp
         Objects/Randomiser.cpp
         Objects/Timer.cpp
+        Objects/Gui.cpp
 )
 
 add_subdirectory(Ecs)
@@ -31,11 +32,9 @@ add_subdirectory(Ecs)
 add_executable(${TARGET_NAME} 
     ${SOURCES})
 
-# target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 # target_compile_options(${TARGET_NAME} PRIVATE -g3 -O0)
-
-add_compile_options(-fsanitize=address -g)
-add_link_options(-fsanitize=address)
+target_compile_options(${TARGET_NAME} PRIVATE -Ofast)
 
 target_compile_features(${TARGET_NAME} PRIVATE cxx_std_20)
 

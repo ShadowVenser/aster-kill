@@ -18,7 +18,7 @@
 class ShootingSystem: public ISystem
 {
 public:
-    ShootingSystem(World& world, Drawer& d, const Config& cfg):
+    ShootingSystem(World& world, Drawer& d, const Config& cfg, bool& isPaused):
         ISystem(world),
         
         _CooldownTimer([time= cfg.cfg().at("bullet").at("cooldown").get<int>()](){
@@ -34,7 +34,8 @@ public:
         _playerStorage(world.GetStorage<PlayerComponent>()),
         _positionStorage(world.GetStorage<PositionComponent>()),
         _shootEvents(world.GetStorage<ShootEventComponent>()),
-        _spriteStorage(world.GetStorage<SpriteComponent>())
+        _spriteStorage(world.GetStorage<SpriteComponent>()),
+        _isPaused(isPaused)
     { }
 
     void OnInit() override { }
@@ -54,5 +55,7 @@ private:
     ComponentStorage<PositionComponent>& _positionStorage;
     ComponentStorage<ShootEventComponent>& _shootEvents;
     ComponentStorage<SpriteComponent>& _spriteStorage;
+
+    bool& _isPaused;
 
 };

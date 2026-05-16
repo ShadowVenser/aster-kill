@@ -77,3 +77,9 @@ float Randomiser::GetSpawnTime()
     auto ret = spawn_time(_gen);
     return ret;
 }
+
+void Randomiser::BindGui(my_game::GuiBinder& binder)
+{
+    binder.meanTime = &_spawn_time.x;
+    binder.stdTime = &_spawn_time.y;
+}

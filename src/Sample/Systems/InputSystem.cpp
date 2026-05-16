@@ -14,8 +14,21 @@ void InputSystem::OnUpdate()
             switch (kse->code) {
                 case sf::Keyboard::Key::Space: 
                 {
-                    auto shootEventEntity = world.CreateEntity();
-                    _shootEventComponent.Add(shootEventEntity, { });
+                    if (!_states.x)
+                    {
+                        auto shootEventEntity = world.CreateEntity();
+                        _shootEventComponent.Add(shootEventEntity, { });
+                    }
+                    break;
+                }
+                case sf::Keyboard::Key::Escape:
+                {
+                    _states.x = !_states.x;
+                    break;
+                }
+                case sf::Keyboard::Key::I:
+                {
+                    _states.y = !_states.y;
                     break;
                 }
                 default:

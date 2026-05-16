@@ -4,6 +4,7 @@
 #include <random>
 #include <type_traits>
 #include "Config.h"
+#include "MyGame.h"
 #include "SFML/System/Vector2.hpp"
 
 class Randomiser
@@ -17,6 +18,8 @@ public:
     float GetRotate();
     int GetSprite();
     float GetSpawnTime();
+
+    void BindGui(my_game::GuiBinder& binder);
 
 private:
     unsigned int _seed;

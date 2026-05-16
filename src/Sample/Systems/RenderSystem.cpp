@@ -19,5 +19,7 @@ void RenderSystem::OnUpdate()
         }
     }
 
+    _drawGui();
+
     _drawer->Display();
 }

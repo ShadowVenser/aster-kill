@@ -35,6 +35,7 @@ public:
 
     EntityId GetPackedEntity(int e) const;
     bool UnpackEntity(const EntityId& eId, int& e) const;
+    const std::vector<EntityId>& GetEntities() const;
 
     uint64_t GetEntityComponents(int e) override;
     bool IsEntityAlive(int e) const override;

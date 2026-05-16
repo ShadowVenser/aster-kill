@@ -2,52 +2,17 @@
 
 #include <functional>
 #include <memory>
-#include <cstdint>
 #include <unordered_map>
 #include <vector>
 
+#include "MyGame.h"
 #include "Randomiser.h"
-#include "SFML/Graphics.hpp"
 
 #include "Config.h"
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Clock.hpp"
-
-namespace my_game {
-    enum class type {
-        Asteroid,
-        Player,
-        Bullet,
-    };
-
-    template<typename T>
-    struct vec2 
-    {
-        T x;
-        T y;
-    };
-
-    template<typename T>
-    struct vec3 
-    {
-        T x;
-        T y;
-        T z;
-    };
-
-    struct AsteroidProps
-    {
-        int score = 0;
-        int collisionR = 0;
-        float rotateSpeed = 0;
-        float speed = 0;
-        vec2<float> dir {0., 0.};
-        vec2<float> pos = {0., 0.};
-        int spriteId = 0;
-    };
-}
 
 class Drawer
 {
@@ -73,6 +38,8 @@ public:
 
     my_game::AsteroidProps GetAsteroid();
 
+    void BindGui(my_game::GuiBinder& binder);
+
 private:
     int _score = 0;
     std::unique_ptr<sf::RenderWindow> _window;
@@ -86,5 +53,6 @@ private:
     std::unordered_map<my_game::type, std::shared_ptr<sf::Sprite>> _sprites;
 
     sf::Font _font;
-    std::shared_ptr<sf::Text> _gameOver;
+    std::shared_ptr<sf::Text> _scoreText;
+    std::shared_ptr<sf::Text> _gameOverText;
 };

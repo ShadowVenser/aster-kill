@@ -75,6 +75,12 @@ void World::RemoveEntity(int e)
     _freeEntities.push_back(e);
 }
 
+const std::vector<EntityId>& World::GetEntities() const
+{
+    return _entities;
+}
+
+
 EntityId World::GetPackedEntity(const int e) const
 {
     return _entities[e];

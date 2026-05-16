@@ -4,7 +4,11 @@ void ShootingSystem::OnUpdate()
 {
     if (_shootEvents.Count() > 0)
     {
-        if (_CooldownTimer.isEvent())
+        if (_isPaused)
+        {
+            _CooldownTimer.pause();
+        }
+        else if (_CooldownTimer.isEvent())
         {
             auto bullet = world.CreateEntity();
 

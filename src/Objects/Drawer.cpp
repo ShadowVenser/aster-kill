@@ -1,11 +1,13 @@
 #include "Drawer.h"
 #include <cmath>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/System/Angle.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "imgui-SFML.h"
 
 Drawer::Drawer(const Config& cfg):
     _rnd(cfg)
@@ -20,6 +22,9 @@ Drawer::Drawer(const Config& cfg):
     _window->setVerticalSyncEnabled(true);
 
     _window->setKeyRepeatEnabled(false);
+
+    if (!ImGui::SFML::Init(*_window))
+        throw std::runtime_error("IMGUI FAILED!!!");
 
     // ---------- ASTEROIDS INIT ----------
 
@@ -58,11 +63,6 @@ Drawer::Drawer(const Config& cfg):
         });
     }
 
-    if (_font.openFromFile(cfg.cfg().at("font").at("path").get<std::string>()))
-    {
-        _gameOver = std::make_shared<sf::Text>(_font, "", cfg.cfg().at("font").at("size").get<int>());
-    }
-
     // ---------- PLAYER INIT ----------
     
     _textures.insert({
@@ -90,12 +90,27 @@ Drawer::Drawer(const Config& cfg):
         my_game::type::Bullet,
         std::make_shared<sf::Sprite>(*_textures[my_game::type::Bullet])
     });
+
+    // ---------- LABELS INIT ----------
+
+    if (_font.openFromFile(cfg.cfg().at("font").at("path").get<std::string>()))
+    {
+        _gameOverText = std::make_shared<sf::Text>(_font, "", cfg.cfg().at("font").at("size").get<int>());
+        _scoreText = std::make_shared<sf::Text>(_font, "Score: 0", cfg.cfg().at("font").at("size").get<int>());
+    }
+    
+    _scoreText->setPosition({
+        0.f,
+        _window->getSize().y - _scoreText->getGlobalBounds().size.y
+    });
 }
 
 void Drawer::pollEvent(std::vector<sf::Event>& events, my_game::vec2<bool>& isPressed)
 {
     while (const std::optional event = _window->pollEvent())
     {
+        ImGui::SFML::ProcessEvent(*_window, *event);
+
         if (event->is<sf::Event::Closed>())
         {
             _window->close();
@@ -161,6 +176,7 @@ std::function<sf::Time()> Drawer::CreateSpawnTimeGetter()
 void Drawer::InitDraw()
 {
     _window->clear();
+    _window->draw(*_scoreText);
 }
 
 void Drawer::Display()
@@ -180,20 +196,20 @@ void Drawer::DrawGameOver()
     
     if (isFirst)
     {
-        if (_gameOver)
+        if (_gameOverText)
         {
-            _gameOver->setString("Game Over\nScore: " + std::to_string(_score));
-            _gameOver->setPosition({
-                (_window->getSize().x - _gameOver->getGlobalBounds().size.x) / 2,
-                (_window->getSize().y - _gameOver->getGlobalBounds().size.y) / 2
+            _gameOverText->setString("Game Over\nScore: " + std::to_string(_score));
+            _gameOverText->setPosition({
+                (_window->getSize().x - _gameOverText->getGlobalBounds().size.x) / 2,
+                (_window->getSize().y - _gameOverText->getGlobalBounds().size.y) / 2
             });
         }
         isFirst = false;
     }
     _window->clear();
-    if (_gameOver)
+    if (_gameOverText)
     {
-        _window->draw(*_gameOver);
+        _window->draw(*_gameOverText);
     }
     _window->display();
 }
@@ -201,6 +217,7 @@ void Drawer::DrawGameOver()
 void Drawer::SetScore(int val)
 {
     _score = val;
+    _scoreText->setString("Score: " + std::to_string(val));
 }
 
 my_game::vec2<int> Drawer::GetSpriteSize(my_game::type id)
@@ -210,4 +227,10 @@ my_game::vec2<int> Drawer::GetSpriteSize(my_game::type id)
         .x = rect.size.x,
         .y = rect.size.y
     };
+}
+
+void Drawer::BindGui(my_game::GuiBinder& binder)
+{
+    binder.renderer = &(*_window);
+    _rnd.BindGui(binder);
 }

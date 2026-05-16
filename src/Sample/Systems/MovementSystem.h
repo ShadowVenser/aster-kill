@@ -18,8 +18,10 @@ class MovementSystem final : public ISystem {
 
     std::shared_ptr<Filter> _moveables;
 
+    bool& _isPaused;
+
 public:
-    MovementSystem(World &world)
+    MovementSystem(World &world, bool& isPaused)
         : ISystem(world),
             _positionComponents(world.GetStorage<PositionComponent>()),
             _movementComponents(world.GetStorage<MovementComponent>()),
@@ -27,7 +29,8 @@ public:
             _moveables(FilterBuilder(world)
                 .With<PositionComponent>()
                 .With<MovementComponent>()
-                .Build())
+                .Build()),
+            _isPaused(isPaused)
     {
     }
 

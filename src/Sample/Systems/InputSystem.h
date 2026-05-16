@@ -16,14 +16,16 @@ class InputSystem : public ISystem {
     ComponentStorage<ShootEventComponent>& _shootEventComponent;
 
     my_game::vec2<bool>& _isPressed;
+    my_game::vec2<bool>& _states;
 
 public:
-    InputSystem(World &world, std::vector<sf::Event>& events, my_game::vec2<bool>& isPressed)
+    InputSystem(World &world, std::vector<sf::Event>& events, my_game::vec2<bool>& isPressed, my_game::vec2<bool>& states)
         : ISystem(world),
         _events(events),
         _moveEventComponents(world.GetStorage<MoveInputEventComponent>()),
         _shootEventComponent(world.GetStorage<ShootEventComponent>()),
-        _isPressed(isPressed)
+        _isPressed(isPressed),
+        _states(states)
     {
     }
 
